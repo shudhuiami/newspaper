@@ -26,7 +26,7 @@
   }
 
   function syncActiveNavigationState() {
-    document.querySelectorAll('.catnav a, .drawer-nav a').forEach((link) => {
+    document.querySelectorAll('.catnav a, .drawer-nav a, .preview-nav a').forEach((link) => {
       if (link.classList.contains('active')) {
         link.setAttribute('aria-current', 'page');
       } else {
@@ -62,5 +62,9 @@
   window.addEventListener('DOMContentLoaded', () => {
     enhance();
     observeAppRerenders();
+  });
+
+  document.addEventListener('khobor:preview-rendered', () => {
+    window.requestAnimationFrame(enhance);
   });
 })();
