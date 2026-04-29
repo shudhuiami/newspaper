@@ -1,0 +1,289 @@
+/* ========================================================================== 
+   Issue #5 — Premium header, search overlay, and mobile drawer enhancements
+   This file intentionally layers on top of the existing static UI.
+   ========================================================================== */
+
+body.overlay-open {
+  overflow: hidden;
+}
+
+.masthead.is-scrolled {
+  padding-top: 14px;
+  padding-bottom: 12px;
+  border-bottom-width: 2px;
+  box-shadow: var(--shadow-3);
+}
+
+.masthead.is-scrolled .logo {
+  height: 38px;
+}
+
+.header-icon-button {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--rule-1);
+  border-radius: var(--radius-pill);
+  background: var(--surface-1);
+  color: var(--ink-1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-1);
+  transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out);
+}
+
+.header-icon-button:hover {
+  transform: translateY(-1px);
+  border-color: var(--rule-brand);
+  background: var(--primary-soft);
+}
+
+.mobile-menu-trigger {
+  display: none;
+}
+
+/* ---------- Search Overlay ---------- */
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.search-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.search-overlay-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 17, 22, .62);
+  backdrop-filter: blur(10px);
+}
+
+.search-overlay-panel {
+  position: relative;
+  width: min(760px, calc(100% - 32px));
+  margin: 9vh auto 0;
+  background: var(--surface-1);
+  border: 1px solid var(--rule-1);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-overlay);
+  transform: translateY(16px) scale(.98);
+  transition: transform var(--dur-slow) var(--ease-spring);
+  overflow: hidden;
+}
+
+.search-overlay.is-open .search-overlay-panel {
+  transform: translateY(0) scale(1);
+}
+
+.search-overlay-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 22px;
+  border-bottom: 1px solid var(--rule-1);
+}
+
+.search-overlay-head h2 {
+  margin: 0;
+  font: 400 var(--fs-h2) / 1.2 var(--font-display-bn);
+  color: var(--ink-1);
+}
+
+.search-overlay-close,
+.drawer-close {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--rule-1);
+  background: var(--surface-2);
+  color: var(--ink-1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.search-overlay-body {
+  padding: 22px;
+}
+
+.search-overlay-field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--rule-2);
+  border-radius: var(--radius-xl);
+  padding: 14px 16px;
+  background: var(--surface-2);
+}
+
+.search-overlay-field input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink-1);
+  font: 600 18px var(--font-ui-bn);
+}
+
+.search-suggestions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.search-suggestion {
+  border: 1px solid var(--rule-1);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  background: var(--surface-1);
+  color: var(--ink-1);
+  text-align: left;
+  cursor: pointer;
+  font: 700 14px / 1.45 var(--font-ui-bn);
+  transition: border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out);
+}
+
+.search-suggestion:hover {
+  border-color: var(--rule-brand);
+  background: var(--surface-brand);
+}
+
+/* ---------- Mobile Drawer ---------- */
+.mobile-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  pointer-events: none;
+}
+
+.drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 17, 22, .58);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.drawer-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(420px, 88vw);
+  height: 100%;
+  background: var(--surface-1);
+  box-shadow: var(--shadow-overlay);
+  transform: translateX(105%);
+  transition: transform var(--dur-slow) var(--ease-spring);
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-drawer.is-open {
+  pointer-events: auto;
+}
+
+.mobile-drawer.is-open .drawer-backdrop {
+  opacity: 1;
+}
+
+.mobile-drawer.is-open .drawer-panel {
+  transform: translateX(0);
+}
+
+.drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px;
+  border-bottom: 1px solid var(--rule-1);
+}
+
+.drawer-brand {
+  font: 800 18px var(--font-ui-bn);
+  color: var(--ink-1);
+}
+
+.drawer-nav {
+  padding: 16px 20px 24px;
+  display: grid;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.drawer-nav a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 13px 14px;
+  border: 1px solid var(--rule-1);
+  border-radius: var(--radius-lg);
+  background-image: none;
+  color: var(--ink-1);
+  font: 700 15px var(--font-ui-bn);
+}
+
+.drawer-nav a.active,
+.drawer-nav a:hover {
+  border-color: var(--rule-brand);
+  background: var(--surface-brand);
+  color: var(--maroon-600);
+}
+
+.drawer-note {
+  margin-top: auto;
+  padding: 18px 20px;
+  border-top: 1px solid var(--rule-1);
+  color: var(--ink-3);
+  font: 13px / 1.6 var(--font-ui-bn);
+  background: var(--surface-2);
+}
+
+@media (max-width: 991px) {
+  .mobile-menu-trigger {
+    display: inline-flex;
+  }
+}
+
+@media (max-width: 768px) {
+  .masthead .actions {
+    justify-self: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .masthead .search-shell {
+    display: none;
+  }
+
+  .search-suggestions {
+    grid-template-columns: 1fr;
+  }
+
+  .search-overlay-panel {
+    margin-top: 5vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-overlay,
+  .search-overlay-panel,
+  .drawer-backdrop,
+  .drawer-panel,
+  .masthead,
+  .masthead .logo,
+  .header-icon-button {
+    transition: none !important;
+  }
+}
