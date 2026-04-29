@@ -1,0 +1,50 @@
+---
+description: Responsive layout and motion skill for the static newspaper UI
+globs:
+  - "styles/*.css"
+  - "js/app.js"
+alwaysApply: false
+---
+
+# Skill: Responsive UX and Motion
+
+Use this skill when implementing layout breakpoints, mobile UX, sticky behavior, scroll effects, transitions, overlays, and animations.
+
+## Responsive Rules
+- Treat mobile UX as first-class, not an afterthought.
+- Prevent horizontal overflow at all breakpoints.
+- Use the existing container/gutter tokens where possible.
+- Use responsive breakpoints around:
+  - 1200px
+  - 991px
+  - 768px
+  - 575px
+- Desktop should use an editorial grid with sidebar.
+- Tablet should use simplified two-column layouts.
+- Mobile should use stacked cards, compact header, horizontal category nav, and drawer menu.
+- Bangla headlines need comfortable line-height and size on mobile.
+
+## Motion Rules
+- Keep motion subtle, premium, and fast.
+- Use CSS transitions for hover/focus states.
+- Use `IntersectionObserver` for scroll reveal.
+- Respect `prefers-reduced-motion`.
+- Avoid animations that cause layout shift.
+- Do not animate too many heavy properties.
+- Prefer opacity and transform animations.
+
+## Required Interactions
+- Sticky header style change on scroll.
+- Search overlay open/close.
+- Mobile drawer open/close.
+- Back-to-top button visibility on scroll.
+- Scroll reveal for cards/sections.
+- Card hover lift and image zoom.
+- Ticker pause on hover.
+
+## Acceptance Checklist
+- Works on desktop, tablet, and mobile.
+- No layout overflow.
+- Motion is professional and not distracting.
+- Reduced-motion users are respected.
+- Overlay and drawer interactions feel smooth.
