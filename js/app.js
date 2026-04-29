@@ -393,7 +393,7 @@
       <div class="video-item">
         <div class="video-card reveal" style="background:${bg}">
           ${video.live ? `<div class="live">${esc(t.ui.live)}</div>` : ""}
-          <div class="play">${renderIcon("play")}</div>
+          <div class="play"></div>
           ${!video.live ? `<div class="duration">${esc(video.duration)}</div>` : ""}
         </div>
         <div class="video-meta">
