@@ -18,9 +18,33 @@
     return `linear-gradient(135deg, ${values[0]}, ${values[1]})`;
   }
 
+  function getFallbackText(bn, en) {
+    return lang === "bn" ? bn : en;
+  }
+
+  function normalizeArticle(item = {}, sectionName = "") {
+    return {
+      eyebrow: item.eyebrow || sectionName,
+      title: item.title || "",
+      lede: item.lede || "",
+      meta: item.meta || "",
+      tone: item.tone || ["#5a3a40", "#1a0d10"],
+    };
+  }
+
+  function collectArticles(t) {
+    const articles = [];
+    (t.sections || []).forEach((section) => {
+      if (section.feature) articles.push(normalizeArticle(section.feature, section.name));
+      (section.list || []).forEach((item) => articles.push(normalizeArticle(item, section.name)));
+      (section.cards || []).forEach((item) => articles.push(normalizeArticle(item, section.name)));
+    });
+    return articles;
+  }
+
   function renderLangToggle() {
     return `
-      <div class="lang-toggle">
+      <div class="lang-toggle" aria-label="Language switcher">
         <button class="${lang === "bn" ? "active" : ""}" data-lang="bn">বাংলা</button>
         <button class="${lang === "en" ? "active" : ""}" data-lang="en">English</button>
       </div>
@@ -30,7 +54,7 @@
   function renderTopBar(t) {
     return `
       <div class="topbar">
-        <div class="wrap">
+        <div class="wrap topbar-inner">
           <div class="date">${esc(t.date)}</div>
           <div class="actions">
             <a href="#">${esc(t.ui.subscribe)}</a>
@@ -44,25 +68,26 @@
 
   function renderMasthead(t) {
     const logo = t.branding?.logo || (lang === "en" ? "assets/logos/logo-khobor-en.svg" : "assets/logos/logo-khobor.svg");
+    const edition = getFallbackText("সংখ্যা ১২৪ · বছর ১", "Issue 124 · Year 1");
     return `
       <header class="masthead">
-        <div class="wrap">
+        <div class="wrap masthead-inner">
           <div class="lockup">
-            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
+            <div class="date-stack">
               <div class="date-en">${esc(t.dateEn)}</div>
-              <div style="font-size:11px;color:var(--ink-4);font-family:var(--font-ui-bn);letter-spacing:.04em">সংখ্যা ১২৪ · বছর ১</div>
+              <div class="edition">${esc(edition)}</div>
             </div>
           </div>
-          <a href="#" style="text-decoration:none;background-image:none">
+          <a href="#" class="brand-link" aria-label="Khobor home">
             <img src="${logo}" alt="Khobor" class="logo">
           </a>
           <div class="actions">
-            <div style="display:flex;align-items:center;gap:8px;background:var(--bg-soft);border:1px solid var(--rule-1);border-radius:6px;padding:8px 12px;width:240px">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5a6270" stroke-width="2">
+            <div class="search-shell">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <circle cx="11" cy="11" r="7"></circle>
                 <path d="M20 20l-3.5-3.5"></path>
               </svg>
-              <input id="search-input" placeholder="${esc(t.ui.search)}" style="border:0;background:transparent;outline:0;flex:1;font:13px var(--font-ui-bn);color:var(--ink-1);width:100%">
+              <input id="search-input" placeholder="${esc(t.ui.search)}" aria-label="${esc(t.ui.search)}">
             </div>
           </div>
         </div>
@@ -72,8 +97,8 @@
 
   function renderCategoryNav(t) {
     return `
-      <nav class="catnav">
-        <div class="wrap">
+      <nav class="catnav" aria-label="Primary categories">
+        <div class="wrap catnav-inner">
           ${t.nav.map((it, i) => `<a href="#" data-nav-index="${i}" class="${i === activeNav ? "active" : ""}">${esc(it)}</a>`).join("")}
         </div>
       </nav>
@@ -81,7 +106,7 @@
   }
 
   function renderTicker(t) {
-    const items = [...t.breaking, ...t.breaking];
+    const items = [...(t.breaking || []), ...(t.breaking || [])];
     return `
       <div class="ticker">
         <div class="ticker-label"><span class="dot"></span>${esc(t.ui.breaking)}</div>
@@ -94,65 +119,130 @@
     `;
   }
 
-  function renderHero(t) {
+  function renderStoryMeta(meta) {
+    return `<div class="meta story-meta">${esc(meta)}</div>`;
+  }
+
+  function renderSectionHeader(title, link) {
     return `
-      <section class="hero">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">${esc(getFallbackText("খবর", "News"))}</span>
+          <h2>${esc(title)}</h2>
+        </div>
+        <a href="#">${esc(link || getFallbackText("সব দেখুন →", "View all →"))}</a>
+      </div>
+    `;
+  }
+
+  function renderImageBlock(item, className = "") {
+    return `<div class="img ${className}" style="background:${gradient(item.tone, ["#5a3a40", "#1a0d10"])}"></div>`;
+  }
+
+  function renderHero(t) {
+    const quickStories = (t.heroSide || []).slice(2, 4);
+    const secondaryStories = (t.heroSide || []).slice(0, 2);
+    return `
+      <section class="hero hero-modern" aria-label="Featured stories">
         <article class="hero-lead reveal">
-          <div class="img" style="background:${gradient(t.hero.tone, ["#5a3a40", "#1a0d10"])}"></div>
-          <div class="eyebrow">${esc(t.hero.eyebrow)}</div>
-          <h1>${esc(t.hero.title)}</h1>
-          <p class="lede">${esc(t.hero.lede)}</p>
-          <div class="meta">${esc(t.hero.meta)}</div>
+          ${renderImageBlock(t.hero || {}, "hero-image")}
+          <div class="story-content">
+            <div class="eyebrow">${esc(t.hero?.eyebrow)}</div>
+            <h1>${esc(t.hero?.title)}</h1>
+            <p class="lede">${esc(t.hero?.lede)}</p>
+            ${renderStoryMeta(t.hero?.meta)}
+          </div>
         </article>
-        <div class="hero-side">
-          ${t.heroSide
-            .map(
-              (a) => `
-                <article class="reveal">
-                  <div class="eyebrow">${esc(a.eyebrow)}</div>
-                  <h3>${esc(a.title)}</h3>
-                  <div class="meta">${esc(a.meta)}</div>
-                </article>
-              `
-            )
-            .join("")}
+        <div class="hero-secondary">
+          ${secondaryStories.map((a) => `
+            <article class="hero-tile reveal">
+              ${renderImageBlock(a)}
+              <div class="eyebrow">${esc(a.eyebrow)}</div>
+              <h3>${esc(a.title)}</h3>
+              ${renderStoryMeta(a.meta)}
+            </article>
+          `).join("")}
+        </div>
+        <div class="hero-quick">
+          ${quickStories.map((a) => `
+            <article class="quick-story reveal">
+              <div class="eyebrow">${esc(a.eyebrow)}</div>
+              <h3>${esc(a.title)}</h3>
+              ${renderStoryMeta(a.meta)}
+            </article>
+          `).join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderNewsCard(item, variant = "standard") {
+    return `
+      <article class="news-card news-card-${variant} reveal">
+        <div class="img-wrap">${renderImageBlock(item)}</div>
+        <div class="card-body">
+          <div class="eyebrow">${esc(item.eyebrow)}</div>
+          <h3>${esc(item.title)}</h3>
+          ${item.lede ? `<p>${esc(item.lede)}</p>` : ""}
+          ${renderStoryMeta(item.meta)}
+        </div>
+      </article>
+    `;
+  }
+
+  function renderLatestStrip(t, articles) {
+    const title = getFallbackText("সর্বশেষ খবর", "Latest News");
+    const latest = articles.slice(0, 5);
+    return `
+      <section class="latest-strip reveal" aria-label="${esc(title)}">
+        <div class="latest-title">${esc(title)}</div>
+        <div class="latest-items">
+          ${latest.map((item) => `
+            <a href="#" class="latest-item">
+              <span>${esc(item.eyebrow)}</span>
+              <strong>${esc(item.title)}</strong>
+            </a>
+          `).join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderTopStories(t, articles) {
+    const title = getFallbackText("টপ স্টোরি", "Top Stories");
+    const stories = articles.slice(5, 9);
+    return `
+      <section class="section section-compact">
+        ${renderSectionHeader(title, t.ui.viewAll)}
+        <div class="top-story-grid">
+          ${stories.map((item) => renderNewsCard(item, "compact")).join("")}
         </div>
       </section>
     `;
   }
 
   function renderSection(section) {
-    const header = `
-      <div class="section-header">
-        <h2>${esc(section.name)}</h2>
-        <a href="#">${esc(section.link)}</a>
-      </div>
-    `;
+    const header = renderSectionHeader(section.name, section.link);
 
     if (section.feature) {
-      const feature = section.feature;
+      const feature = normalizeArticle(section.feature, section.name);
       return `
         <section class="section">
           ${header}
-          <div class="section-row">
-            <article class="feature-card reveal">
-              <div class="img" style="background:${gradient(feature.tone, ["#3d4a5c", "#1a2330"])}"></div>
-              <div class="eyebrow" style="color:var(--maroon-600);font:700 12px var(--font-ui-bn);letter-spacing:.1em;text-transform:uppercase">${esc(feature.eyebrow)}</div>
-              <h3>${esc(feature.title)}</h3>
-              <p class="lede">${esc(feature.lede)}</p>
-              <div class="meta">${esc(feature.meta)}</div>
-            </article>
-            <div class="list-stack">
-              ${section.list
-                .map(
-                  (it) => `
-                    <a href="#" class="reveal">
-                      <div class="eyebrow">${esc(it.eyebrow)}</div>
-                      <h4>${esc(it.title)}</h4>
-                      <div class="meta">${esc(it.meta)}</div>
+          <div class="section-row modern-section-row">
+            ${renderNewsCard(feature, "feature")}
+            <div class="list-stack modern-list-stack">
+              ${(section.list || [])
+                .map((it) => {
+                  const item = normalizeArticle(it, section.name);
+                  return `
+                    <a href="#" class="list-story reveal">
+                      <div class="eyebrow">${esc(item.eyebrow)}</div>
+                      <h4>${esc(item.title)}</h4>
+                      ${renderStoryMeta(item.meta)}
                     </a>
-                  `
-                )
+                  `;
+                })
                 .join("")}
             </div>
           </div>
@@ -163,20 +253,54 @@
     return `
       <section class="section">
         ${header}
-        <div class="cards">
-          ${section.cards
-            .map((c) => {
-              const bg = gradient(c.tone, ["#5a3a40", "#1a0d10"]);
-              return `
-                <article class="card reveal">
-                  <div class="img-wrap"><div class="img" style="background:${bg}"></div></div>
-                  <div class="eyebrow">${esc(c.eyebrow)}</div>
-                  <h3>${esc(c.title)}</h3>
-                  <div class="meta">${esc(c.meta)}</div>
-                </article>
-              `;
-            })
-            .join("")}
+        <div class="cards modern-cards">
+          ${(section.cards || []).map((c) => renderNewsCard(normalizeArticle(c, section.name), "standard")).join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderEditorPick(t, articles) {
+    const pick = articles[9] || articles[0];
+    const side = articles.slice(10, 13);
+    if (!pick) return "";
+    return `
+      <section class="editor-pick reveal">
+        <div class="editor-copy">
+          <span class="section-kicker">${esc(getFallbackText("সম্পাদকের পছন্দ", "Editor’s Pick"))}</span>
+          <h2>${esc(pick.title)}</h2>
+          <p>${esc(pick.lede || getFallbackText("দিনের গুরুত্বপূর্ণ বিশ্লেষণ ও বাছাই করা খবর।", "A selected story with context and editorial weight."))}</p>
+          ${renderStoryMeta(pick.meta)}
+        </div>
+        <div class="editor-side">
+          ${side.map((item) => `
+            <a href="#">
+              <span>${esc(item.eyebrow)}</span>
+              <strong>${esc(item.title)}</strong>
+            </a>
+          `).join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderPhotoGallery(t, articles) {
+    const title = getFallbackText("ছবিঘর", "Photo Gallery");
+    const gallery = articles.slice(13, 17);
+    if (!gallery.length) return "";
+    return `
+      <section class="section">
+        ${renderSectionHeader(title, t.ui.viewAll)}
+        <div class="gallery-grid">
+          ${gallery.map((item, index) => `
+            <article class="gallery-card ${index === 0 ? "large" : ""} reveal">
+              ${renderImageBlock(item)}
+              <div>
+                <div class="eyebrow">${esc(item.eyebrow)}</div>
+                <h3>${esc(item.title)}</h3>
+              </div>
+            </article>
+          `).join("")}
         </div>
       </section>
     `;
@@ -190,10 +314,10 @@
         : ["35 min ago", "1h ago", "2h ago", "3h ago", "4h ago"];
     return `
       <aside class="sidebar">
-        <div>
+        <div class="sidebar-panel">
           <h3 class="title">${esc(t.ui.trending)}</h3>
           <div class="trending">
-            ${t.trending
+            ${(t.trending || [])
               .map(
                 (title, i) => `
                   <a href="#" class="trending-item reveal">
@@ -214,26 +338,21 @@
           <input id="newsletter-email" type="email" placeholder="${esc(t.ui.emailPh)}">
           <button id="newsletter-submit">${esc(t.ui.subscribeBtn)}</button>
         </div>
-        <div style="aspect-ratio:1/1;background:var(--bg-soft);border:1px dashed var(--rule-2);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--ink-4);font:600 12px var(--font-ui-bn);letter-spacing:.08em;text-transform:uppercase">
-          ADVERTISEMENT
-        </div>
+        <div class="ad-slot reveal">ADVERTISEMENT</div>
       </aside>
     `;
   }
 
   function renderVideos(t) {
     return `
-      <section class="section">
-        <div class="section-header">
-          <h2>${esc(t.ui.videosTitle)}</h2>
-          <a href="#">${esc(t.ui.viewAll)}</a>
-        </div>
+      <section class="section video-section">
+        ${renderSectionHeader(t.ui.videosTitle, t.ui.viewAll)}
         <div class="videos">
-          ${t.videos
+          ${(t.videos || [])
             .map((v) => {
               const bg = gradient(v.tone, ["#2c3e50", "#0e1116"]);
               return `
-                <div>
+                <div class="video-item">
                   <div class="video-card reveal" style="background:${bg}">
                     ${v.live ? `<div class="live">${esc(t.ui.live)}</div>` : ""}
                     <div class="play"></div>
@@ -343,24 +462,32 @@
       return;
     }
 
+    const articles = collectArticles(t);
+
     root.innerHTML = `
       <div lang="${esc(lang)}">
         ${renderTopBar(t)}
         ${renderMasthead(t)}
         ${renderCategoryNav(t)}
-        <div class="wrap">
-          ${renderTicker(t)}
-          ${renderHero(t)}
-        </div>
-        <div class="wrap">
-          <div class="home-grid">
-            <main>
-              ${t.sections.map((section) => renderSection(section)).join("")}
-              ${renderVideos(t)}
-            </main>
-            ${renderSidebar(t)}
+        <main>
+          <div class="wrap">
+            ${renderTicker(t)}
+            ${renderHero(t)}
+            ${renderLatestStrip(t, articles)}
           </div>
-        </div>
+          <div class="wrap">
+            <div class="home-grid">
+              <div class="content-flow">
+                ${renderTopStories(t, articles)}
+                ${renderEditorPick(t, articles)}
+                ${(t.sections || []).map((section) => renderSection(section)).join("")}
+                ${renderPhotoGallery(t, articles)}
+                ${renderVideos(t)}
+              </div>
+              ${renderSidebar(t)}
+            </div>
+          </div>
+        </main>
         ${renderFooter(t)}
       </div>
     `;
