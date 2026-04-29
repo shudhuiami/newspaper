@@ -1,0 +1,457 @@
+/* ========================================================================== 
+   Issue #8 — Responsive design polish
+   Focus: desktop/tablet/mobile refinement without changing data or app logic.
+   ========================================================================== */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+button,
+a,
+input {
+  -webkit-tap-highlight-color: rgba(139, 42, 53, .12);
+}
+
+/* Better wide-screen rhythm without making text lines too long. */
+@media (min-width: 1441px) {
+  .wrap {
+    max-width: var(--container-wide);
+  }
+
+  .home-grid {
+    grid-template-columns: minmax(0, 1fr) 340px;
+  }
+}
+
+/* ---------- 1200px: reduce density and protect sidebar/grid ---------- */
+@media (max-width: 1200px) {
+  .wrap {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .masthead-inner {
+    gap: 18px;
+  }
+
+  .hero-modern {
+    gap: 20px;
+  }
+
+  .home-grid {
+    gap: 28px;
+  }
+
+  .section {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+
+  .news-card-feature h3 {
+    font-size: 24px;
+  }
+
+  .editor-pick {
+    padding: 28px;
+  }
+}
+
+/* ---------- 991px: tablet layout, no sticky sidebar, balanced sections ---------- */
+@media (max-width: 991px) {
+  .masthead {
+    position: relative;
+    top: auto;
+  }
+
+  .masthead-inner {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "brand actions"
+      "meta actions";
+    align-items: center;
+  }
+
+  .masthead .lockup {
+    grid-area: meta;
+    justify-self: start;
+  }
+
+  .brand-link {
+    grid-area: brand;
+    justify-self: start;
+  }
+
+  .masthead .actions {
+    grid-area: actions;
+    justify-self: end;
+  }
+
+  .catnav {
+    position: sticky;
+    top: 0;
+  }
+
+  .catnav-inner {
+    gap: 22px;
+    padding-left: 22px;
+    padding-right: 22px;
+    scroll-padding-inline: 22px;
+  }
+
+  .hero-secondary,
+  .hero-quick {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cards,
+  .modern-cards,
+  .top-story-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sidebar {
+    gap: 20px;
+  }
+
+  .videos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .videos .video-item:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .footer .wrap,
+  footer .wrap {
+    gap: 28px;
+  }
+}
+
+/* ---------- 768px: intentional mobile/tablet transition ---------- */
+@media (max-width: 768px) {
+  .wrap {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .topbar .actions {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+
+  .masthead-inner {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "brand"
+      "meta"
+      "actions";
+    gap: 14px;
+  }
+
+  .masthead .logo {
+    height: 40px;
+  }
+
+  .masthead .actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .header-icon-button,
+  .search-overlay-close,
+  .drawer-close,
+  .card-actions button {
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .catnav-inner {
+    height: auto;
+    min-height: 48px;
+    gap: 20px;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .catnav a {
+    padding: 15px 0;
+    font-size: 15px;
+  }
+
+  .ticker {
+    align-items: stretch;
+    flex-direction: column;
+    border-radius: var(--radius-lg);
+  }
+
+  .ticker-label {
+    justify-content: center;
+    min-height: 40px;
+  }
+
+  .ticker-track {
+    padding: 12px 0;
+  }
+
+  .hero-modern {
+    padding-top: 12px;
+    gap: 18px;
+  }
+
+  .hero-lead .story-content {
+    padding: 20px;
+  }
+
+  .hero-lead h1 {
+    font-size: clamp(28px, 8vw, 38px);
+    line-height: 1.22;
+  }
+
+  .hero-lead .lede {
+    font-size: 16px;
+    line-height: 1.72;
+  }
+
+  .hero-secondary,
+  .hero-quick,
+  .cards,
+  .modern-cards,
+  .top-story-grid,
+  .opinion-grid,
+  .briefing-rail,
+  .videos,
+  .sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .latest-strip {
+    margin-bottom: 20px;
+  }
+
+  .section {
+    padding-top: 26px;
+    padding-bottom: 26px;
+  }
+
+  .section-header {
+    margin-bottom: 18px;
+  }
+
+  .section-header h2 {
+    font-size: clamp(24px, 7vw, 32px);
+  }
+
+  .news-card-feature {
+    display: block;
+  }
+
+  .news-card-feature .img {
+    min-height: auto;
+    aspect-ratio: 16 / 10;
+  }
+
+  .editor-pick {
+    margin-top: 18px;
+    padding: 22px;
+    border-radius: var(--radius-xl);
+  }
+
+  .editor-pick h2 {
+    font-size: clamp(24px, 7vw, 32px);
+  }
+
+  .gallery-grid {
+    gap: 14px;
+  }
+
+  .gallery-card,
+  .gallery-card.large {
+    min-height: 280px;
+  }
+
+  .drawer-panel {
+    width: min(390px, 92vw);
+  }
+
+  .search-overlay-panel {
+    width: calc(100% - 24px);
+  }
+}
+
+/* ---------- 575px: compact mobile polish ---------- */
+@media (max-width: 575px) {
+  .wrap {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .topbar-inner {
+    gap: 8px;
+  }
+
+  .topbar .actions {
+    gap: 10px;
+  }
+
+  .lang-toggle {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .lang-toggle button {
+    flex: 1;
+    justify-content: center;
+    min-height: 36px;
+  }
+
+  .masthead {
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+
+  .masthead .logo {
+    height: 36px;
+  }
+
+  .date-stack {
+    font-size: 12px;
+  }
+
+  .masthead .actions {
+    gap: 10px;
+  }
+
+  .header-icon-button {
+    width: 42px;
+    height: 42px;
+  }
+
+  .ticker-track-inner {
+    font-size: 13px;
+  }
+
+  .hero-lead,
+  .hero-tile,
+  .quick-story,
+  .news-card,
+  .horizontal-card,
+  .opinion-card,
+  .sidebar-panel,
+  .newsletter-box,
+  .editor-pick,
+  .gallery-card {
+    border-radius: var(--radius-lg);
+  }
+
+  .hero-lead .story-content,
+  .news-card .card-body,
+  .quick-story,
+  .opinion-card,
+  .horizontal-card-body,
+  .newsletter-box,
+  .sidebar-panel {
+    padding: 16px;
+  }
+
+  .hero-tile h3,
+  .quick-story h3,
+  .news-card h3,
+  .horizontal-card h3,
+  .opinion-card h3,
+  .list-story h4,
+  .trending-item h4 {
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .news-card-feature h3,
+  .gallery-card.large h3 {
+    font-size: 23px;
+    line-height: 1.32;
+  }
+
+  .card-footer-row {
+    gap: 10px;
+  }
+
+  .card-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .latest-item {
+    padding: 14px;
+  }
+
+  .opinion-card {
+    display: block;
+  }
+
+  .opinion-avatar {
+    margin-bottom: 12px;
+  }
+
+  .drawer-nav {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .drawer-nav a {
+    min-height: 48px;
+  }
+
+  .search-overlay-head,
+  .search-overlay-body {
+    padding: 16px;
+  }
+
+  .search-overlay-head h2 {
+    font-size: 24px;
+  }
+
+  .search-overlay-field input {
+    font-size: 16px;
+  }
+
+  footer {
+    margin-top: 30px;
+    padding-top: 34px;
+  }
+}
+
+/* ---------- Small phones ---------- */
+@media (max-width: 380px) {
+  .wrap {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .topbar .actions a {
+    font-size: 11px;
+  }
+
+  .hero-lead h1 {
+    font-size: 27px;
+  }
+
+  .section-header h2 {
+    font-size: 23px;
+  }
+
+  .card-badge {
+    max-width: calc(100% - 24px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
