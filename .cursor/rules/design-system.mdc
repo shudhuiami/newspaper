@@ -1,0 +1,41 @@
+---
+description: Design system skill for the Bangla newspaper UI prototype
+globs:
+  - "styles/tokens.css"
+  - "styles/style.css"
+alwaysApply: false
+---
+
+# Skill: Design System Upgrade
+
+Use this skill when working on colors, typography, spacing, shadows, borders, cards, badges, buttons, visual hierarchy, or responsive layout foundations.
+
+## Objective
+Extend the existing design-token system instead of hardcoding scattered styles.
+
+## Rules
+- Prefer CSS custom properties in `styles/tokens.css` for reusable values.
+- Keep maroon as the primary editorial brand color.
+- Add colors for premium surfaces, soft backgrounds, overlays, focus rings, muted text, and section blocks.
+- Use restrained shadows; this is an editorial news portal, not a SaaS dashboard.
+- Keep radii refined and professional.
+- Tune Bangla typography carefully: line-height should not feel cramped.
+- Use English typography only as a secondary mode.
+
+## Recommended Token Groups
+- Brand colors
+- Surface/background colors
+- Text/ink colors
+- Border/rule colors
+- Shadow/elevation
+- Radius
+- Spacing
+- Layout/container
+- Motion/easing
+- Focus states
+
+## Acceptance Checklist
+- Tokens are clearly named.
+- New tokens are commented by group.
+- Styles reuse tokens instead of repeated raw values.
+- Bangla and English modes both remain visually balanced.
