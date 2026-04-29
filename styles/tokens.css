@@ -1,4 +1,4 @@
-/* ==========================================================================
+/* ========================================================================== 
    Khobor — Bangla News Portal
    Foundational design tokens: color + typography + spacing + motion
    ========================================================================== */
@@ -6,64 +6,102 @@
 @import url('../assets/fonts/fonts.css');
 
 :root {
-  /* ----- COLOR: BASE ----------------------------------------------------- */
-  --bg:           #ffffff;          /* page background */
-  --bg-soft:      #f5f7fa;          /* section bg, soft canvas */
-  --bg-muted:     #eef1f5;          /* subtle blocks, skeletons */
-  --bg-inverse:   #0e1116;          /* footer / dark bands */
+  /* ----- COLOR: BASE / CANVAS ------------------------------------------- */
+  --bg:             #fffdf9;          /* warm page background */
+  --bg-canvas:      #fbf7f1;          /* premium editorial canvas */
+  --bg-soft:        #f6f3ee;          /* section bg, soft canvas */
+  --bg-muted:       #eceff3;          /* subtle blocks, skeletons */
+  --bg-elevated:    #ffffff;          /* cards, overlays, header surfaces */
+  --bg-inverse:     #0e1116;          /* footer / dark bands */
+  --bg-inverse-2:   #171b22;          /* elevated dark surface */
+
+  /* ----- COLOR: SURFACES ------------------------------------------------ */
+  --surface-1:      #ffffff;          /* primary card surface */
+  --surface-2:      #fbf8f3;          /* warm secondary surface */
+  --surface-3:      #f3f5f8;          /* cool secondary surface */
+  --surface-brand:  #fff4f2;          /* subtle maroon-tinted surface */
+  --surface-accent: #f0f6ff;          /* subtle blue-tinted surface */
 
   /* ----- COLOR: INK (TEXT) ---------------------------------------------- */
-  --ink-1:        #0e1116;          /* primary text, headlines */
-  --ink-2:        #2a2f37;          /* body */
-  --ink-3:        #5a6270;          /* meta, captions */
-  --ink-4:        #8b94a3;          /* tertiary, time stamps */
-  --ink-on-dark:  #f4f4f0;          /* text on dark bands */
+  --ink-1:          #0e1116;          /* primary text, headlines */
+  --ink-2:          #252a32;          /* body */
+  --ink-3:          #586170;          /* meta, captions */
+  --ink-4:          #8b94a3;          /* tertiary, time stamps */
+  --ink-5:          #b0b7c3;          /* disabled / decorative text */
+  --ink-on-dark:    #f8f4ee;          /* text on dark bands */
+  --ink-muted-dark: #b7bfca;          /* muted text on dark bands */
 
   /* ----- COLOR: PRIMARY (Editorial Maroon) ------------------------------ */
   /* Modern, slightly desaturated maroon — news identity without the harsh
      1990s tabloid red. Used for masthead, breaking, primary actions. */
-  --maroon-50:    #fbf2f3;
-  --maroon-100:   #f5dfe1;
-  --maroon-200:   #ebbcc1;
-  --maroon-400:   #c66a73;
-  --maroon-500:   #a8424c;
-  --maroon-600:   #8b2a35;          /* PRIMARY */
-  --maroon-700:   #6e1f28;
-  --maroon-800:   #521820;
-  --primary:      var(--maroon-600);
-  --primary-hover:var(--maroon-700);
-  --primary-soft: var(--maroon-50);
+  --maroon-25:      #fff8f7;
+  --maroon-50:      #fbf2f3;
+  --maroon-100:     #f5dfe1;
+  --maroon-200:     #ebbcc1;
+  --maroon-300:     #dc9098;
+  --maroon-400:     #c66a73;
+  --maroon-500:     #a8424c;
+  --maroon-600:     #8b2a35;          /* PRIMARY */
+  --maroon-700:     #6e1f28;
+  --maroon-800:     #521820;
+  --maroon-900:     #351016;
+  --primary:        var(--maroon-600);
+  --primary-hover:  var(--maroon-700);
+  --primary-active: var(--maroon-800);
+  --primary-soft:   var(--maroon-50);
 
-  /* ----- COLOR: ACCENT (Ink Blue) --------------------------------------- */
-  /* Trust accent, used sparingly for opinion, links, language pill. */
-  --ink-blue-500: #1e4f8b;
-  --ink-blue-600: #163d6e;
-  --accent:       var(--ink-blue-500);
+  /* ----- COLOR: ACCENT (Trust Blue + Editorial Gold) -------------------- */
+  /* Blue is used sparingly for links, information, and trust accents.
+     Gold is reserved for premium/editor picks and decorative separators. */
+  --ink-blue-50:    #eef6ff;
+  --ink-blue-100:   #d7eaff;
+  --ink-blue-500:   #1e4f8b;
+  --ink-blue-600:   #163d6e;
+  --ink-blue-700:   #102f55;
+  --gold-50:        #fff8e6;
+  --gold-100:       #f7e7b7;
+  --gold-500:       #b8872f;
+  --gold-600:       #8f681f;
+  --accent:         var(--ink-blue-500);
+  --accent-hover:   var(--ink-blue-600);
+  --premium:        var(--gold-500);
 
   /* ----- COLOR: SEMANTIC ------------------------------------------------ */
-  --breaking:     #c1272d;          /* live/breaking pulse only */
-  --live:         #e53935;
-  --success:      #2f855a;
-  --warning:      #b7791f;
-  --danger:       #b42318;
+  --breaking:       #c1272d;          /* live/breaking pulse only */
+  --live:           #e53935;
+  --success:        #2f855a;
+  --success-soft:   #e7f5ee;
+  --warning:        #b7791f;
+  --warning-soft:   #fff6df;
+  --danger:         #b42318;
+  --danger-soft:    #fff1f0;
+  --info:           var(--ink-blue-500);
+  --info-soft:      var(--ink-blue-50);
 
   /* ----- BORDERS / DIVIDERS --------------------------------------------- */
-  --rule-1:       #e5e8ed;          /* default hairline */
-  --rule-2:       #d3d8e0;          /* stronger card edge */
-  --rule-strong:  #0e1116;          /* editorial top-rule (1px black) */
+  --rule-0:         rgba(14, 17, 22, .06);  /* ultra-subtle separators */
+  --rule-1:         #e5e8ed;                /* default hairline */
+  --rule-2:         #d3d8e0;                /* stronger card edge */
+  --rule-brand:     rgba(139, 42, 53, .22); /* maroon-tinted divider */
+  --rule-strong:    #0e1116;                /* editorial top-rule */
+  --rule-on-dark:   rgba(255, 255, 255, .14);
 
-  /* ----- SHADOW / ELEVATION (very restrained) --------------------------- */
-  --shadow-1:     0 1px 2px rgba(14,17,22,.04), 0 1px 1px rgba(14,17,22,.03);
-  --shadow-2:     0 4px 16px -4px rgba(14,17,22,.08), 0 2px 4px rgba(14,17,22,.04);
-  --shadow-3:     0 12px 32px -8px rgba(14,17,22,.14), 0 4px 8px rgba(14,17,22,.05);
-  --shadow-focus: 0 0 0 3px rgba(139,42,53,.18);
+  /* ----- SHADOW / ELEVATION (restrained editorial depth) ---------------- */
+  --shadow-1:       0 1px 2px rgba(14,17,22,.04), 0 1px 1px rgba(14,17,22,.03);
+  --shadow-2:       0 6px 20px -8px rgba(14,17,22,.16), 0 2px 6px rgba(14,17,22,.04);
+  --shadow-3:       0 16px 42px -18px rgba(14,17,22,.22), 0 8px 16px rgba(14,17,22,.06);
+  --shadow-card:    0 10px 30px -20px rgba(14,17,22,.32);
+  --shadow-overlay: 0 24px 80px -24px rgba(14,17,22,.42);
+  --shadow-focus:   0 0 0 3px rgba(139,42,53,.18);
 
-  /* ----- RADII (tight, editorial) --------------------------------------- */
-  --radius-xs:    2px;
-  --radius-sm:    4px;
-  --radius-md:    6px;
-  --radius-lg:    10px;
-  --radius-pill:  999px;
+  /* ----- RADII (refined editorial, not overly rounded) ------------------ */
+  --radius-xs:      2px;
+  --radius-sm:      4px;
+  --radius-md:      6px;
+  --radius-lg:      10px;
+  --radius-xl:      14px;
+  --radius-2xl:     20px;
+  --radius-pill:    999px;
 
   /* ----- SPACING SCALE (4px base) --------------------------------------- */
   --s-1:  4px;
@@ -77,6 +115,7 @@
   --s-9:  56px;
   --s-10: 72px;
   --s-11: 96px;
+  --s-12: 120px;
 
   /* ----- TYPOGRAPHY: STACKS --------------------------------------------- */
   /* Bangla-first: Bangla face listed FIRST so it renders Bangla glyphs;
@@ -88,53 +127,73 @@
   --font-mono:       ui-monospace, 'SF Mono', Menlo, monospace;
 
   /* ----- TYPE SCALE (responsive, Bangla-tuned line heights) ------------ */
-  /* Bangla glyphs sit lower than latin; need ~10% more line-height. */
-  --lh-tight:   1.18;
-  --lh-snug:    1.32;
-  --lh-normal:  1.55;
-  --lh-relaxed: 1.75;
+  /* Bangla glyphs sit lower than latin; need slightly more line-height. */
+  --lh-tight:     1.18;
+  --lh-snug:      1.34;
+  --lh-normal:    1.58;
+  --lh-relaxed:   1.78;
+  --lh-reading:   1.88;
 
-  /* sizes — fluid clamp() for hero, fixed for body */
-  --fs-display:   clamp(40px, 5.6vw, 72px);   /* hero headline */
-  --fs-h1:        clamp(30px, 3.4vw, 44px);
-  --fs-h2:        clamp(24px, 2.4vw, 32px);
-  --fs-h3:        20px;
+  /* sizes — fluid clamp() for major editorial headings */
+  --fs-display:   clamp(42px, 5.8vw, 76px);   /* hero headline */
+  --fs-h1:        clamp(31px, 3.5vw, 46px);
+  --fs-h2:        clamp(25px, 2.5vw, 34px);
+  --fs-h3:        clamp(20px, 1.7vw, 24px);
   --fs-h4:        17px;
   --fs-body:      16px;
   --fs-body-bn:   17px;                       /* Bangla a hair larger */
+  --fs-lede:      clamp(18px, 1.6vw, 21px);
   --fs-meta:      13px;
   --fs-tiny:      11px;
   --fs-eyebrow:   12px;
 
   /* ----- MOTION --------------------------------------------------------- */
-  --ease-out:    cubic-bezier(.2, .7, .2, 1);
-  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
-  --dur-fast:    120ms;
-  --dur-base:    200ms;
-  --dur-slow:    360ms;
+  --ease-out:        cubic-bezier(.2, .7, .2, 1);
+  --ease-in-out:     cubic-bezier(.65, 0, .35, 1);
+  --ease-spring:     cubic-bezier(.2, .9, .2, 1.08);
+  --dur-instant:     80ms;
+  --dur-fast:        120ms;
+  --dur-base:        200ms;
+  --dur-slow:        360ms;
+  --dur-reveal:      560ms;
 
   /* ----- LAYOUT --------------------------------------------------------- */
-  --container:   1280px;
+  --container:       1280px;
+  --container-wide:  1440px;
   --container-narrow: 720px;          /* article reading column */
-  --gutter:      24px;
+  --gutter:          24px;
+  --sidebar:         320px;
+  --header-height:   72px;
+
+  /* ----- Z-INDEX -------------------------------------------------------- */
+  --z-base:          1;
+  --z-sticky:        50;
+  --z-drawer:        80;
+  --z-overlay:       90;
+  --z-modal:         100;
+
+  /* ----- FOCUS / ACCESSIBILITY ----------------------------------------- */
+  --focus-ring:      0 0 0 3px rgba(139,42,53,.22);
+  --focus-outline:   2px solid var(--maroon-600);
+  --focus-offset:    3px;
 }
 
-/* ==========================================================================
+/* ========================================================================== 
    SEMANTIC TYPOGRAPHY — apply via class or element selectors
    Defaults below assume <body lang="bn"> for Bangla; latin works the same.
    ========================================================================== */
 
-html       { -webkit-text-size-adjust: 100%; }
-body, .ui  { font-family: var(--font-ui-bn);  color: var(--ink-2); font-size: var(--fs-body-bn); line-height: var(--lh-normal); -webkit-font-smoothing: antialiased; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body, .ui { font-family: var(--font-ui-bn); color: var(--ink-2); font-size: var(--fs-body-bn); line-height: var(--lh-normal); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 :lang(en) body, .ui[lang="en"] { font-family: var(--font-ui-en); font-size: var(--fs-body); }
 
 .display, h1.display { font-family: var(--font-display-bn); font-weight: 400; font-size: var(--fs-display); line-height: var(--lh-tight); letter-spacing: -.01em; color: var(--ink-1); }
-:lang(en) .display     { font-family: var(--font-display-en); font-weight: 700; }
+:lang(en) .display { font-family: var(--font-display-en); font-weight: 700; }
 
 h1, .h1 { font-family: var(--font-display-bn); font-weight: 400; font-size: var(--fs-h1); line-height: var(--lh-tight); letter-spacing: -.005em; color: var(--ink-1); }
-h2, .h2 { font-family: var(--font-display-bn); font-weight: 400; font-size: var(--fs-h2); line-height: var(--lh-snug);  color: var(--ink-1); }
-h3, .h3 { font-family: var(--font-ui-bn);      font-weight: 700; font-size: var(--fs-h3); line-height: var(--lh-snug);  color: var(--ink-1); }
-h4, .h4 { font-family: var(--font-ui-bn);      font-weight: 600; font-size: var(--fs-h4); line-height: var(--lh-snug);  color: var(--ink-1); }
+h2, .h2 { font-family: var(--font-display-bn); font-weight: 400; font-size: var(--fs-h2); line-height: var(--lh-snug); color: var(--ink-1); }
+h3, .h3 { font-family: var(--font-ui-bn); font-weight: 700; font-size: var(--fs-h3); line-height: var(--lh-snug); color: var(--ink-1); }
+h4, .h4 { font-family: var(--font-ui-bn); font-weight: 600; font-size: var(--fs-h4); line-height: var(--lh-snug); color: var(--ink-1); }
 
 :lang(en) h1, :lang(en) .h1,
 :lang(en) h2, :lang(en) .h2 { font-family: var(--font-display-en); font-weight: 700; }
@@ -144,27 +203,59 @@ h4, .h4 { font-family: var(--font-ui-bn);      font-weight: 600; font-size: var(
 p, .body { font-size: var(--fs-body-bn); line-height: var(--lh-relaxed); color: var(--ink-2); text-wrap: pretty; }
 :lang(en) p, :lang(en) .body { font-size: var(--fs-body); }
 
-.lede     { font-size: 19px; line-height: 1.6; color: var(--ink-2); font-weight: 500; }
-.meta     { font-size: var(--fs-meta);   color: var(--ink-3); line-height: 1.4; }
-.eyebrow  { font-size: var(--fs-eyebrow); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--maroon-600); font-family: var(--font-ui-bn); }
+.lede { font-size: var(--fs-lede); line-height: 1.64; color: var(--ink-2); font-weight: 500; }
+.meta { font-size: var(--fs-meta); color: var(--ink-3); line-height: 1.4; }
+.eyebrow { font-size: var(--fs-eyebrow); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--maroon-600); font-family: var(--font-ui-bn); }
 :lang(en) .eyebrow { font-family: var(--font-ui-en); }
-.caption  { font-size: var(--fs-tiny); color: var(--ink-4); font-style: italic; }
+.caption { font-size: var(--fs-tiny); color: var(--ink-4); font-style: italic; }
 
-a         { color: var(--ink-1); text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-position: 0 100%; background-repeat: no-repeat; background-size: 0 1px; transition: background-size var(--dur-base) var(--ease-out); }
-a:hover   { background-size: 100% 1px; }
+a { color: var(--ink-1); text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-position: 0 100%; background-repeat: no-repeat; background-size: 0 1px; transition: color var(--dur-base) var(--ease-out), background-size var(--dur-base) var(--ease-out); }
+a:hover { background-size: 100% 1px; }
 a.link-blue { color: var(--ink-blue-500); }
 
 /* number/timestamp digits — tabular */
 .num, time { font-feature-settings: 'tnum' 1, 'lnum' 1; }
 
-/* ==========================================================================
+/* ========================================================================== 
    GLOBAL UTILITIES
    ========================================================================== */
 .container { max-width: var(--container); margin: 0 auto; padding: 0 var(--gutter); }
-.rule-top  { border-top: 1px solid var(--rule-strong); }
+.container-wide { max-width: var(--container-wide); margin: 0 auto; padding: 0 var(--gutter); }
+.rule-top { border-top: 1px solid var(--rule-strong); }
 .rule-thin { border-top: 1px solid var(--rule-1); }
-.divider   { height: 1px; background: var(--rule-1); border: 0; margin: var(--s-6) 0; }
+.divider { height: 1px; background: var(--rule-1); border: 0; margin: var(--s-6) 0; }
+
+/* Shared keyboard focus affordance for current and future controls. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-offset);
+  box-shadow: var(--focus-ring);
+}
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --gutter: 18px;
+    --fs-display: clamp(34px, 10vw, 46px);
+    --fs-h1: clamp(28px, 8vw, 38px);
+    --fs-h2: clamp(23px, 6vw, 30px);
+    --fs-h3: 20px;
+  }
+}
+
+@media (max-width: 575px) {
+  :root {
+    --gutter: 16px;
+    --fs-body-bn: 16px;
+    --fs-lede: 17px;
+  }
 }
