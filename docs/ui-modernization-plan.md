@@ -163,6 +163,21 @@ Recommended execution order:
 
 ---
 
+## PR Review Checklist
+
+Use this checklist for implementation PRs under issue #1:
+
+- [ ] The PR stays within UI-only scope.
+- [ ] The project still runs by opening `index.html` directly.
+- [ ] Bangla and English modes continue to work.
+- [ ] No backend, database, API, framework, bundler, or package manager is added.
+- [ ] Dynamic content is escaped before rendering.
+- [ ] Desktop, tablet, and mobile layouts are considered.
+- [ ] Accessibility basics are preserved or improved.
+- [ ] Browser console is checked for errors.
+
+---
+
 ## Definition of Done for Issue #1
 
 Issue #1 can be considered complete when:
