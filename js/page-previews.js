@@ -37,6 +37,7 @@
       lede: item.lede || '',
       meta: item.meta || '',
       tone: item.tone || ['#5a3a40', '#1a0d10'],
+      image: item.image || '',
     };
   }
 
@@ -70,7 +71,14 @@
   }
 
   function imageBlock(article, className = '') {
-    return `<div class="img ${className}" role="img" aria-label="${esc(t('ছবির প্রিভিউ', 'Image preview'))}: ${esc(article.title)}" style="background:${gradient(article.tone)}"></div>`;
+    const toneBg = gradient(article.tone);
+    const label = `${t('ছবির প্রিভিউ', 'Image preview')}: ${article.title}`;
+    if (article.image) {
+      return `<div class="img ${className} img-has-photo" role="img" aria-label="${esc(label)}" style="background:${toneBg}">
+        <img src="${esc(article.image)}" alt="${esc(article.title)}" class="card-photo" loading="lazy" decoding="async" width="960" height="600">
+      </div>`;
+    }
+    return `<div class="img ${className}" role="img" aria-label="${esc(label)}" style="background:${toneBg}"></div>`;
   }
 
   function previewNav(active) {

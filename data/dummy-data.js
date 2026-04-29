@@ -10,7 +10,7 @@
   const en = JSON.parse(JSON.stringify(sourceEn));
 
   bn.branding = {
-    logo: "assets/logos/dummy-logo-bn.svg",
+    logo: "assets/logos/logo-khobor.svg",
     site: "dummy.khobor.local",
   };
   bn.date = 'ডামি তারিখ · কেবল প্রিভিউ';
@@ -31,10 +31,10 @@
   }
   if (Array.isArray(bn.heroSide)) {
     bn.heroSide = bn.heroSide.map((item, idx) => ({
+      ...item,
       eyebrow: "ডামি আপডেট",
       title: "ডামি সাইড স্টোরি " + (idx + 1),
       meta: "প্রিভিউ টাইমস্ট্যাম্প",
-      tone: item.tone,
     }));
   }
   if (Array.isArray(bn.sections)) {
@@ -84,7 +84,7 @@
   }
 
   en.branding = {
-    logo: "assets/logos/dummy-logo-en.svg",
+    logo: "assets/logos/logo-khobor-en.svg",
     site: "dummy.khobor.local",
   };
   en.date = 'Dummy date · Preview only';
@@ -104,7 +104,8 @@
     en.trending = en.trending.map((_, idx) => 'Trending dummy item ' + (idx + 1));
   }
   if (Array.isArray(en.heroSide)) {
-    en.heroSide = en.heroSide.map((_, idx) => ({
+    en.heroSide = en.heroSide.map((item, idx) => ({
+      ...item,
       eyebrow: "Dummy Update",
       title: "Dummy side story " + (idx + 1),
       meta: "Preview timestamp",

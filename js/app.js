@@ -39,6 +39,7 @@
       lede: item.lede || "",
       meta: item.meta || "",
       tone: item.tone || ["#5a3a40", "#1a0d10"],
+      image: item.image || "",
     };
   }
 
@@ -101,7 +102,16 @@
   }
 
   function renderImageBlock(item, className = "") {
-    return `<div class="img ${esc(className)}" style="background:${gradient(item?.tone, ["#5a3a40", "#1a0d10"])}"></div>`;
+    const toneBg = gradient(item?.tone, ["#5a3a40", "#1a0d10"]);
+    const src = item?.image;
+    const alt = item?.title || "";
+    const extraClass = src ? " img-has-photo" : "";
+    if (src) {
+      return `<div class="img ${esc(className)}${extraClass}" style="background:${toneBg}">
+        <img src="${esc(src)}" alt="${esc(alt)}" class="card-photo" loading="lazy" decoding="async" width="960" height="600">
+      </div>`;
+    }
+    return `<div class="img ${esc(className)}" style="background:${toneBg}"></div>`;
   }
 
   function renderSectionHeader(title, link) {
@@ -488,10 +498,13 @@
   }
 
   function renderVideoCard(t, video) {
-    const bg = gradient(video.tone, ["#2c3e50", "#0e1116"]);
+    const tone = gradient(video.tone, ["#2c3e50", "#0e1116"]);
+    const bg = video.image
+      ? `linear-gradient(rgba(14,17,22,.4), rgba(14,17,22,.58)), url("${String(video.image).replace(/"/g, "")}") center/cover no-repeat`
+      : tone;
     return `
       <div class="video-item">
-        <div class="video-card reveal" style="background:${bg}">
+        <div class="video-card reveal${video.image ? " video-card-has-poster" : ""}" style="background:${bg}">
           ${video.live ? `<div class="live">${renderIcon("live")} ${esc(t.ui.live)}</div>` : ""}
           <div class="play"></div>
           ${!video.live ? `<div class="duration">${esc(video.duration)}</div>` : ""}

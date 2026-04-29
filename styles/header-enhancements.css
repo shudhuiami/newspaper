@@ -18,6 +18,17 @@ body.overlay-open {
   height: 38px;
 }
 
+/* Masthead compacts on scroll; keep sticky catnav + sidebar offsets in sync (desktop). */
+@media (min-width: 992px) {
+  .masthead.is-scrolled + .catnav {
+    top: 70px;
+  }
+
+  .masthead.is-scrolled ~ main .sidebar {
+    top: 131px;
+  }
+}
+
 .header-icon-button {
   width: 42px;
   height: 42px;
