@@ -4,6 +4,7 @@
 
   const state = {
     observer: null,
+    lastFocusedElement: null,
   };
 
   const icon = {
@@ -28,17 +29,39 @@
     }));
   }
 
-  function closeAll() {
-    document.querySelector('.search-overlay')?.classList.remove('is-open');
-    document.querySelector('.mobile-drawer')?.classList.remove('is-open');
+  function getFocusableElements(container) {
+    return Array.from(container.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+      .filter((el) => !el.hasAttribute('hidden') && el.offsetParent !== null);
+  }
+
+  function setDialogState(selector, isOpen) {
+    const dialog = document.querySelector(selector);
+    if (!dialog) return;
+    dialog.classList.toggle('is-open', isOpen);
+    dialog.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+  }
+
+  function restoreFocus() {
+    const target = state.lastFocusedElement;
+    state.lastFocusedElement = null;
+    if (target && typeof target.focus === 'function' && document.body.contains(target)) {
+      target.focus();
+    }
+  }
+
+  function closeAll(options = {}) {
+    setDialogState('.search-overlay', false);
+    setDialogState('.mobile-drawer', false);
     document.body.classList.remove('overlay-open');
+    if (options.restoreFocus !== false) restoreFocus();
   }
 
   function openSearchOverlay() {
     const overlay = document.querySelector('.search-overlay');
     if (!overlay) return;
-    closeAll();
-    overlay.classList.add('is-open');
+    state.lastFocusedElement = document.activeElement;
+    closeAll({ restoreFocus: false });
+    setDialogState('.search-overlay', true);
     document.body.classList.add('overlay-open');
     window.setTimeout(() => overlay.querySelector('input')?.focus(), 60);
   }
@@ -46,8 +69,9 @@
   function openMobileDrawer() {
     const drawer = document.querySelector('.mobile-drawer');
     if (!drawer) return;
-    closeAll();
-    drawer.classList.add('is-open');
+    state.lastFocusedElement = document.activeElement;
+    closeAll({ restoreFocus: false });
+    setDialogState('.mobile-drawer', true);
     document.body.classList.add('overlay-open');
     window.setTimeout(() => drawer.querySelector('a, button')?.focus(), 60);
   }
@@ -71,11 +95,11 @@
     ];
 
     return `
-      <div class="search-overlay" role="dialog" aria-modal="true" aria-label="${t('সার্চ', 'Search')}">
+      <div class="search-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="search-overlay-title">
         <div class="search-overlay-backdrop" data-close-overlays></div>
-        <div class="search-overlay-panel">
+        <div class="search-overlay-panel" tabindex="-1">
           <div class="search-overlay-head">
-            <h2>${t('খবর খুঁজুন', 'Search news')}</h2>
+            <h2 id="search-overlay-title">${t('খবর খুঁজুন', 'Search news')}</h2>
             <button class="search-overlay-close" type="button" aria-label="${t('বন্ধ করুন', 'Close search')}" data-close-overlays>${icon.close}</button>
           </div>
           <div class="search-overlay-body">
@@ -97,16 +121,16 @@
   function renderMobileDrawer() {
     const labels = getNavLabels();
     return `
-      <div class="mobile-drawer" role="dialog" aria-modal="true" aria-label="${t('মোবাইল মেনু', 'Mobile menu')}">
+      <div class="mobile-drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="mobile-drawer-title">
         <div class="drawer-backdrop" data-close-overlays></div>
-        <aside class="drawer-panel">
+        <aside class="drawer-panel" tabindex="-1">
           <div class="drawer-head">
-            <div class="drawer-brand">${t('খবর মেনু', 'Khobor Menu')}</div>
+            <div class="drawer-brand" id="mobile-drawer-title">${t('খবর মেনু', 'Khobor Menu')}</div>
             <button class="drawer-close" type="button" aria-label="${t('মেনু বন্ধ করুন', 'Close menu')}" data-close-overlays>${icon.close}</button>
           </div>
           <nav class="drawer-nav" aria-label="${t('মোবাইল বিভাগ', 'Mobile categories')}">
             ${labels.map((item, index) => `
-              <a href="#" data-drawer-nav-index="${index}" class="${item.active ? 'active' : ''}">
+              <a href="#" data-drawer-nav-index="${index}" class="${item.active ? 'active' : ''}" ${item.active ? 'aria-current="page"' : ''}>
                 <span>${item.text}</span>
                 ${icon.arrow}
               </a>
@@ -128,12 +152,14 @@
     searchButton.type = 'button';
     searchButton.className = 'header-icon-button search-overlay-trigger';
     searchButton.setAttribute('aria-label', t('সার্চ খুলুন', 'Open search'));
+    searchButton.setAttribute('aria-haspopup', 'dialog');
     searchButton.innerHTML = icon.search;
 
     const menuButton = document.createElement('button');
     menuButton.type = 'button';
     menuButton.className = 'header-icon-button mobile-menu-trigger';
     menuButton.setAttribute('aria-label', t('মোবাইল মেনু খুলুন', 'Open mobile menu'));
+    menuButton.setAttribute('aria-haspopup', 'dialog');
     menuButton.innerHTML = icon.menu;
 
     mastheadActions.prepend(searchButton);
@@ -158,7 +184,7 @@
     });
 
     document.querySelectorAll('[data-close-overlays]').forEach((el) => {
-      el.addEventListener('click', closeAll);
+      el.addEventListener('click', () => closeAll());
     });
 
     document.querySelector('.search-overlay-form')?.addEventListener('submit', (event) => {
@@ -185,6 +211,26 @@
     });
   }
 
+  function trapFocus(event) {
+    if (event.key !== 'Tab') return;
+    const activeDialog = document.querySelector('.search-overlay.is-open, .mobile-drawer.is-open');
+    if (!activeDialog) return;
+
+    const focusable = getFocusableElements(activeDialog);
+    if (!focusable.length) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
   function bindGlobalEventsOnce() {
     if (document.body.dataset.headerEnhancementsBound === 'true') return;
     document.body.dataset.headerEnhancementsBound = 'true';
@@ -195,6 +241,7 @@
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') closeAll();
+      trapFocus(event);
     });
   }
 
