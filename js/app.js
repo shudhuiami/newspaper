@@ -83,8 +83,21 @@
     return `<div class="eyebrow">${esc(label)}</div>`;
   }
 
+  function renderCardBadge(label, type = "default") {
+    return `<span class="card-badge card-badge-${esc(type)}">${esc(label)}</span>`;
+  }
+
   function renderAuthorMeta(meta) {
     return `<div class="meta story-meta">${renderIcon("clock", "icon-muted")}<span>${esc(meta)}</span></div>`;
+  }
+
+  function renderCardActions() {
+    return `
+      <div class="card-actions" aria-label="Story actions">
+        <button type="button" aria-label="${esc(getFallbackText("সংরক্ষণ করুন", "Bookmark story"))}">${renderIcon("bookmark")}</button>
+        <button type="button" aria-label="${esc(getFallbackText("শেয়ার করুন", "Share story"))}">${renderIcon("share")}</button>
+      </div>
+    `;
   }
 
   function renderImageBlock(item, className = "") {
@@ -188,14 +201,53 @@
      Story and section renderers
      ----------------------------------------------------------------------- */
   function renderNewsCard(item, variant = "standard") {
+    const isFeature = variant === "feature";
+    const label = isFeature ? getFallbackText("বিশেষ", "Feature") : item.eyebrow;
     return `
       <article class="news-card news-card-${esc(variant)} reveal">
-        <div class="img-wrap">${renderImageBlock(item)}</div>
+        <div class="img-wrap">
+          ${renderImageBlock(item)}
+          ${renderCardBadge(label, isFeature ? "premium" : "default")}
+        </div>
         <div class="card-body">
           ${renderCategoryBadge(item.eyebrow)}
           <h3>${esc(item.title)}</h3>
           ${item.lede ? `<p>${esc(item.lede)}</p>` : ""}
+          <div class="card-footer-row">
+            ${renderAuthorMeta(item.meta)}
+            ${renderCardActions()}
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
+  function renderHorizontalNewsCard(item) {
+    return `
+      <article class="horizontal-card reveal">
+        <div class="thumb-wrap">
+          ${renderImageBlock(item)}
+          ${renderCardBadge(item.eyebrow)}
+        </div>
+        <div class="horizontal-card-body">
+          <h3>${esc(item.title)}</h3>
+          <p>${esc(item.lede || getFallbackText("সংক্ষিপ্ত আপডেট ও গুরুত্বপূর্ণ প্রেক্ষাপট।", "Brief update with useful context."))}</p>
           ${renderAuthorMeta(item.meta)}
+        </div>
+      </article>
+    `;
+  }
+
+  function renderOpinionCard(item, index) {
+    const author = lang === "bn" ? ["মতামত ডেস্ক", "বিশেষ প্রতিনিধি", "সম্পাদকীয় বোর্ড"][index % 3] : ["Opinion Desk", "Special Correspondent", "Editorial Board"][index % 3];
+    return `
+      <article class="opinion-card reveal">
+        <div class="opinion-avatar">${esc(author.charAt(0))}</div>
+        <div>
+          ${renderCategoryBadge(item.eyebrow)}
+          <h3>${esc(item.title)}</h3>
+          <p>${esc(item.lede || getFallbackText("ঘটনার প্রেক্ষাপট, বিশ্লেষণ ও সম্পাদকীয় দৃষ্টিভঙ্গি।", "Context, analysis, and editorial perspective."))}</p>
+          <div class="opinion-author">${renderIcon("user", "icon-muted")} ${esc(author)}</div>
         </div>
       </article>
     `;
@@ -204,7 +256,10 @@
   function renderHeroTile(item) {
     return `
       <article class="hero-tile reveal">
-        ${renderImageBlock(item)}
+        <div class="img-wrap">
+          ${renderImageBlock(item)}
+          ${renderCardBadge(item.eyebrow)}
+        </div>
         ${renderCategoryBadge(item.eyebrow)}
         <h3>${esc(item.title)}</h3>
         ${renderAuthorMeta(item.meta)}
@@ -217,7 +272,10 @@
       <article class="quick-story reveal">
         ${renderCategoryBadge(item.eyebrow)}
         <h3>${esc(item.title)}</h3>
-        ${renderAuthorMeta(item.meta)}
+        <div class="card-footer-row compact-row">
+          ${renderAuthorMeta(item.meta)}
+          ${renderCardActions()}
+        </div>
       </article>
     `;
   }
@@ -229,12 +287,18 @@
     return `
       <section class="hero hero-modern" aria-label="Featured stories">
         <article class="hero-lead reveal">
-          ${renderImageBlock(hero, "hero-image")}
+          <div class="img-wrap hero-img-wrap">
+            ${renderImageBlock(hero, "hero-image")}
+            ${renderCardBadge(getFallbackText("প্রধান খবর", "Lead Story"), "breaking")}
+          </div>
           <div class="story-content">
             ${renderCategoryBadge(hero.eyebrow)}
             <h1>${esc(hero.title)}</h1>
             <p class="lede">${esc(hero.lede)}</p>
-            ${renderAuthorMeta(hero.meta)}
+            <div class="card-footer-row">
+              ${renderAuthorMeta(hero.meta)}
+              ${renderCardActions()}
+            </div>
           </div>
         </article>
         <div class="hero-secondary">${joinHtml(secondaryStories, renderHeroTile)}</div>
@@ -328,6 +392,30 @@
             </a>
           `)}
         </div>
+      </section>
+    `;
+  }
+
+  function renderOpinionSection(t, articles) {
+    const title = getFallbackText("মতামত ও বিশ্লেষণ", "Opinion & Analysis");
+    const opinionItems = articles.slice(2, 5);
+    if (!opinionItems.length) return "";
+    return `
+      <section class="section opinion-section">
+        ${renderSectionHeader(title, t.ui.viewAll)}
+        <div class="opinion-grid">${joinHtml(opinionItems, renderOpinionCard)}</div>
+      </section>
+    `;
+  }
+
+  function renderBriefingRail(t, articles) {
+    const title = getFallbackText("দ্রুত ব্রিফিং", "Quick Briefing");
+    const items = articles.slice(6, 10);
+    if (!items.length) return "";
+    return `
+      <section class="section briefing-section">
+        ${renderSectionHeader(title, t.ui.viewAll)}
+        <div class="briefing-rail">${joinHtml(items, renderHorizontalNewsCard)}</div>
       </section>
     `;
   }
@@ -487,6 +575,13 @@
       });
     });
 
+    document.querySelectorAll(".card-actions button").forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+      });
+    });
+
     const searchInput = document.getElementById("search-input");
     if (searchInput) {
       searchInput.addEventListener("keydown", (event) => {
@@ -544,7 +639,9 @@
               <div class="content-flow">
                 ${renderTopStories(t, articles)}
                 ${renderEditorPick(t, articles)}
+                ${renderOpinionSection(t, articles)}
                 ${joinHtml(t.sections, renderSection)}
+                ${renderBriefingRail(t, articles)}
                 ${renderPhotoGallery(t, articles)}
                 ${renderVideos(t)}
               </div>
