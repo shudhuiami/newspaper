@@ -1,0 +1,44 @@
+---
+description: Rules for modernizing the static Bangla newspaper UI prototype
+globs:
+  - "**/*.html"
+  - "**/*.css"
+  - "**/*.js"
+alwaysApply: true
+---
+
+# Newspaper UI Modernization Rules
+
+This project is a static Bangla-first newspaper UI prototype. Improve UI/UX only unless the user explicitly asks for backend or framework work.
+
+## Must Keep
+- Keep `index.html` as the preview entry point.
+- Keep the app static and dependency-free.
+- Keep Bangla/English language toggle working.
+- Keep `window.KHOBOR_DATA` as the content source.
+- Keep dynamic rendering safe by escaping user/content values.
+
+## Do Not Do
+- Do not add React, Vue, Next.js, Laravel, Vite, Tailwind, npm, composer, database, API, or backend code.
+- Do not replace the whole project structure unless explicitly asked.
+- Do not remove existing fonts or design-token files.
+- Do not make the design look like a generic blog template.
+
+## UI Direction
+Create a premium Bangladeshi news portal experience:
+- editorial
+- trustworthy
+- modern
+- responsive
+- Bangla-first
+- fast and lightweight
+
+Use polished colors, refined spacing, modern cards, better typography, useful icons, subtle animations, and strong mobile UX.
+
+## Required Quality
+- Write clear section comments in CSS.
+- Write concise comments for major JS render helpers and interaction handlers.
+- Use semantic HTML.
+- Add accessible names to icon buttons.
+- Respect `prefers-reduced-motion`.
+- Test desktop, tablet, and mobile layouts mentally before finalizing changes.
