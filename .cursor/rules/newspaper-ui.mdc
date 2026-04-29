@@ -11,6 +11,17 @@ alwaysApply: true
 
 This project is a static Bangla-first newspaper UI prototype. Improve UI/UX only unless the user explicitly asks for backend or framework work.
 
+## Required Work Cycle
+For every implementation issue, follow this exact workflow:
+
+1. Work on the scoped issue in a dedicated feature branch.
+2. Create a pull request back to `master`.
+3. Review the PR code.
+4. If the PR looks good, merge it to `master` and close the related ticket.
+5. If problems are found, fix them on the same branch, update the PR, review again, and repeat until the PR is good, merged, and the ticket is closed.
+
+Never close a ticket before the related PR is merged, unless the ticket is intentionally cancelled or deferred.
+
 ## Must Keep
 - Keep `index.html` as the preview entry point.
 - Keep the app static and dependency-free.
