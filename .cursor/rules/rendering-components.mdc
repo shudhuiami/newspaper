@@ -1,0 +1,60 @@
+---
+description: Rendering and component helper skill for the static newspaper prototype
+globs:
+  - "js/app.js"
+  - "data/*.js"
+alwaysApply: false
+---
+
+# Skill: Vanilla JS Rendering Components
+
+Use this skill when editing `js/app.js` or static data files.
+
+## Objective
+Keep the app static and data-driven while making the renderer modular, safe, and maintainable.
+
+## Core Rules
+- Keep using vanilla JavaScript.
+- Keep using `window.KHOBOR_DATA`.
+- Keep the language state simple.
+- Escape all dynamic text with `esc()` before rendering.
+- Avoid adding dependencies.
+- Avoid huge duplicated HTML blocks.
+
+## Preferred Render Helpers
+Create or maintain focused helpers such as:
+- `renderIcon(name, className)`
+- `renderSectionHeader(section)`
+- `renderCategoryBadge(label)`
+- `renderAuthorMeta(item)`
+- `renderNewsCard(item, variant)`
+- `renderFeatureCard(item)`
+- `renderCompactCard(item)`
+- `renderHorizontalCard(item)`
+- `renderTrendingList(items)`
+- `renderAdSlot(options)`
+- `renderVideoCard(video)`
+- `renderNewsletterBox(t)`
+- `renderSearchOverlay(t)`
+- `renderMobileMenu(t)`
+- `renderBackToTopButton()`
+
+## Data Rules
+- Extend `base-data.js` only when required for UI sections.
+- Keep Bangla and English data structures parallel.
+- Keep dummy data clearly marked as dummy preview content.
+- Do not hardcode large content directly inside render functions when it belongs in data.
+
+## Interaction Rules
+- Attach event listeners after rendering.
+- Avoid attaching duplicate event listeners unintentionally.
+- Keep overlay/menu state simple.
+- Escape closes overlays.
+- Keep alerts only for dummy behavior where no real backend exists.
+
+## Acceptance Checklist
+- Bangla/English toggle works after changes.
+- Render helpers are readable and reusable.
+- No console errors.
+- Dynamic text is escaped.
+- Code comments explain major render groups.
