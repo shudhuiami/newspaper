@@ -53,18 +53,30 @@
   }
 
   /* -----------------------------------------------------------------------
-     Small reusable UI helpers
+     Local inline SVG icon registry. No external icon library is required.
      ----------------------------------------------------------------------- */
+  const ICONS = {
+    search: '<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path>',
+    menu: '<path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path>',
+    close: '<path d="M18 6 6 18"></path><path d="m6 6 12 12"></path>',
+    clock: '<circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path>',
+    user: '<path d="M20 21a8 8 0 0 0-16 0"></path><circle cx="12" cy="7" r="4"></circle>',
+    calendar: '<rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M8 2v4"></path><path d="M16 2v4"></path><path d="M3 10h18"></path>',
+    play: '<path d="m9 7 8 5-8 5z"></path>',
+    live: '<circle cx="12" cy="12" r="3"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.48"></path><path d="M7.76 16.24a6 6 0 0 1 0-8.48"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path><path d="M4.93 19.07a10 10 0 0 1 0-14.14"></path>',
+    arrowRight: '<path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path>',
+    bookmark: '<path d="M6 3h12v18l-6-4-6 4z"></path>',
+    share: '<circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 10.8 6.8-4.1"></path><path d="m8.6 13.2 6.8 4.1"></path>',
+    mail: '<path d="M4 6h16v12H4z"></path><path d="m4 7 8 6 8-6"></path>',
+    globe: '<circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18"></path><path d="M12 3a14 14 0 0 0 0 18"></path>',
+    eye: '<path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle>',
+    facebook: '<path d="M15 8h-2a2 2 0 0 0-2 2v2H9v3h2v6h3v-6h2.4l.6-3H14v-1.5a.5.5 0 0 1 .5-.5H17V8z"></path>',
+    youtube: '<path d="M22 12s0-3-1-4c-.6-.8-1.3-.9-2-.9C16 7 12 7 12 7s-4 0-7 .1c-.7 0-1.4.1-2 .9-1 1-1 4-1 4s0 3 1 4c.6.8 1.3.9 2 .9 3 .1 7 .1 7 .1s4 0 7-.1c.7 0 1.4-.1 2-.9 1-1 1-4 1-4z"></path><path d="m10 10 5 2-5 2z"></path>',
+  };
+
   function renderIcon(name, className = "") {
-    const icons = {
-      search: '<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path>',
-      clock: '<circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path>',
-      arrowRight: '<path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path>',
-      mail: '<path d="M4 6h16v12H4z"></path><path d="m4 7 8 6 8-6"></path>',
-      play: '<path d="m9 7 8 5-8 5z"></path>',
-    };
-    const body = icons[name] || icons.arrowRight;
-    return `<svg class="icon ${esc(className)}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
+    const body = ICONS[name] || ICONS.arrowRight;
+    return `<svg class="icon ${esc(className)}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${body}</svg>`;
   }
 
   function renderCategoryBadge(label) {
@@ -72,7 +84,7 @@
   }
 
   function renderAuthorMeta(meta) {
-    return `<div class="meta story-meta">${renderIcon("clock")}<span>${esc(meta)}</span></div>`;
+    return `<div class="meta story-meta">${renderIcon("clock", "icon-muted")}<span>${esc(meta)}</span></div>`;
   }
 
   function renderImageBlock(item, className = "") {
@@ -86,7 +98,7 @@
           <span class="section-kicker">${esc(getFallbackText("খবর", "News"))}</span>
           <h2>${esc(title)}</h2>
         </div>
-        <a href="#">${esc(link || getFallbackText("সব দেখুন", "View all"))} ${renderIcon("arrowRight")}</a>
+        <a href="#">${esc(link || getFallbackText("সব দেখুন", "View all"))} ${renderIcon("arrowRight", "icon-inline")}</a>
       </div>
     `;
   }
@@ -101,7 +113,7 @@
   function renderLangToggle() {
     return `
       <div class="lang-toggle" aria-label="Language switcher">
-        <button class="${lang === "bn" ? "active" : ""}" data-lang="bn">বাংলা</button>
+        <button class="${lang === "bn" ? "active" : ""}" data-lang="bn">${renderIcon("globe")} বাংলা</button>
         <button class="${lang === "en" ? "active" : ""}" data-lang="en">English</button>
       </div>
     `;
@@ -111,10 +123,10 @@
     return `
       <div class="topbar">
         <div class="wrap topbar-inner">
-          <div class="date">${esc(t.date)}</div>
+          <div class="date">${renderIcon("calendar", "icon-muted")} ${esc(t.date)}</div>
           <div class="actions">
-            <a href="#">${esc(t.ui.subscribe)}</a>
-            <a href="#">${esc(t.ui.login)}</a>
+            <a href="#">${renderIcon("mail", "icon-inline")} ${esc(t.ui.subscribe)}</a>
+            <a href="#">${renderIcon("user", "icon-inline")} ${esc(t.ui.login)}</a>
             ${renderLangToggle()}
           </div>
         </div>
@@ -162,7 +174,7 @@
     const items = [...(t.breaking || []), ...(t.breaking || [])];
     return `
       <div class="ticker">
-        <div class="ticker-label"><span class="dot"></span>${esc(t.ui.breaking)}</div>
+        <div class="ticker-label">${renderIcon("live")}<span class="dot"></span>${esc(t.ui.breaking)}</div>
         <div class="ticker-track">
           <div class="ticker-track-inner">
             ${joinHtml(items, (it) => `<span>${esc(it)}</span>`)}
@@ -236,7 +248,7 @@
     const latest = articles.slice(0, 5);
     return `
       <section class="latest-strip reveal" aria-label="${esc(title)}">
-        <div class="latest-title">${esc(title)}</div>
+        <div class="latest-title">${renderIcon("clock")} ${esc(title)}</div>
         <div class="latest-items">
           ${joinHtml(latest, (item) => `
             <a href="#" class="latest-item">
@@ -303,7 +315,7 @@
     return `
       <section class="editor-pick reveal">
         <div class="editor-copy">
-          <span class="section-kicker">${esc(getFallbackText("সম্পাদকের পছন্দ", "Editor’s Pick"))}</span>
+          <span class="section-kicker">${renderIcon("bookmark")} ${esc(getFallbackText("সম্পাদকের পছন্দ", "Editor’s Pick"))}</span>
           <h2>${esc(pick.title)}</h2>
           <p>${esc(pick.lede || getFallbackText("দিনের গুরুত্বপূর্ণ বিশ্লেষণ ও বাছাই করা খবর।", "A selected story with context and editorial weight."))}</p>
           ${renderAuthorMeta(pick.meta)}
@@ -355,7 +367,7 @@
             <div class="num">${nums[i] || ""}</div>
             <div>
               <h4>${esc(title)}</h4>
-              <div class="meta">${esc(times[i] || "")}</div>
+              <div class="meta">${renderIcon("eye", "icon-muted")} ${esc(times[i] || "")}</div>
             </div>
           </a>
         `)}
@@ -366,10 +378,10 @@
   function renderNewsletterBox(t) {
     return `
       <div class="newsletter-box reveal">
-        <h3>${esc(t.ui.newsletter)}</h3>
+        <h3>${renderIcon("mail")} ${esc(t.ui.newsletter)}</h3>
         <p>${esc(t.ui.newsletterSub)}</p>
         <input id="newsletter-email" type="email" placeholder="${esc(t.ui.emailPh)}">
-        <button id="newsletter-submit">${esc(t.ui.subscribeBtn)}</button>
+        <button id="newsletter-submit">${renderIcon("mail")} ${esc(t.ui.subscribeBtn)}</button>
       </div>
     `;
   }
@@ -378,7 +390,7 @@
     return `
       <aside class="sidebar">
         <div class="sidebar-panel">
-          <h3 class="title">${esc(t.ui.trending)}</h3>
+          <h3 class="title">${renderIcon("eye")} ${esc(t.ui.trending)}</h3>
           ${renderTrendingList(t)}
         </div>
         ${renderNewsletterBox(t)}
@@ -392,13 +404,13 @@
     return `
       <div class="video-item">
         <div class="video-card reveal" style="background:${bg}">
-          ${video.live ? `<div class="live">${esc(t.ui.live)}</div>` : ""}
+          ${video.live ? `<div class="live">${renderIcon("live")} ${esc(t.ui.live)}</div>` : ""}
           <div class="play"></div>
           ${!video.live ? `<div class="duration">${esc(video.duration)}</div>` : ""}
         </div>
         <div class="video-meta">
           <h4>${esc(video.title)}</h4>
-          <div class="meta">${esc(video.duration)}</div>
+          <div class="meta">${renderIcon("play", "icon-muted")} ${esc(video.duration)}</div>
         </div>
       </div>
     `;
@@ -410,6 +422,16 @@
         ${renderSectionHeader(t.ui.videosTitle, t.ui.viewAll)}
         <div class="videos">${joinHtml(t.videos, (v) => renderVideoCard(t, v))}</div>
       </section>
+    `;
+  }
+
+  function renderSocialLinks() {
+    return `
+      <div class="social-links" aria-label="Social links">
+        <a href="#" aria-label="Facebook">${renderIcon("facebook")}</a>
+        <a href="#" aria-label="YouTube">${renderIcon("youtube")}</a>
+        <a href="#" aria-label="Share">${renderIcon("share")}</a>
+      </div>
     `;
   }
 
@@ -425,6 +447,7 @@
           <div class="brand">
             <img src="${esc(logo)}" height="40" style="filter:invert(1) hue-rotate(180deg) saturate(.4) brightness(1.4)" alt="">
             <p>${esc(subtitle)}</p>
+            ${renderSocialLinks()}
           </div>
           ${joinHtml(t.footer?.sections, (s) => `
             <div>
