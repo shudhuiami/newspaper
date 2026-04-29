@@ -12,6 +12,20 @@ This repository is a static Bangla-first newspaper/news portal UI prototype. The
 - `data/dummy-data.js` overrides content for dummy preview mode.
 - `js/app.js` renders the UI using vanilla JavaScript and `window.KHOBOR_DATA`.
 
+## Required Work Cycle
+Every implementation issue must follow this cycle:
+
+1. Start from the target GitHub issue.
+2. Create or use a dedicated feature branch for that issue.
+3. Complete the scoped work for the issue.
+4. Create a pull request back to `master`.
+5. Review the PR code before merging.
+6. If the review is good, merge the PR into `master`.
+7. After the PR is merged, close the related issue as completed.
+8. If problems are found during review, fix them on the same branch, update the PR, review again, and repeat until the PR is good and merged.
+
+Do not close an issue before its implementation PR has been merged, unless the issue is intentionally cancelled or deferred.
+
 ## Non-Negotiable Rules
 1. Keep the project static and runnable by opening `index.html`.
 2. Do not add backend, database, API integration, build tools, bundlers, frameworks, or package managers unless explicitly requested.
@@ -93,6 +107,8 @@ Ensure there is no horizontal overflow, broken card grid, unreadable Bangla head
 
 ## Definition of Done
 A task is done when:
+- The related PR has been reviewed and merged to `master`.
+- The related GitHub issue has been closed after merge.
 - `index.html` loads without build tools.
 - Bangla and English modes both work.
 - UI is clean on desktop, tablet, and mobile.
