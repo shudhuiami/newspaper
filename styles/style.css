@@ -11,7 +11,7 @@ body { margin: 0; background: var(--bg); }
 .icon-inline { margin-left:4px; }
 .icon-muted { color:currentColor; opacity:.72; }
 .story-meta { display:flex; align-items:center; gap:6px; color: var(--ink-4); }
-.section-header a, .topbar a, .newsletter-box h3, .newsletter-box button, .latest-title, .sidebar h3.title, .video-meta .meta, .trending-item .meta, .ticker-label, .lang-toggle button { display:inline-flex; align-items:center; gap:6px; }
+.section-header a, .topbar a, .newsletter-box h3, .newsletter-box button, .latest-title, .sidebar h3.title, .video-meta .meta, .trending-item .meta, .ticker-label, .lang-toggle button, .video-card .live { display:inline-flex; align-items:center; gap:6px; }
 .social-links { display:flex; align-items:center; gap:10px; margin-top:18px; }
 .social-links a { width:34px; height:34px; border:1px solid var(--rule-on-dark); border-radius:var(--radius-pill); display:inline-flex; align-items:center; justify-content:center; color:var(--ink-on-dark); background-image:none; transition:background var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out); }
 .social-links a:hover { background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.3); }
@@ -165,7 +165,6 @@ body { margin: 0; background: var(--bg); }
 .video-card .play::before { content:''; width: 0; height: 0; border-left: 14px solid var(--ink-1); border-top: 9px solid transparent; border-bottom: 9px solid transparent; margin-left: 4px; }
 .video-card .duration { position: absolute; right: 10px; bottom: 10px; background: rgba(0,0,0,.78); color: #fff; padding: 3px 8px; border-radius: 3px; font: 700 11px var(--font-ui-en); letter-spacing: .04em; }
 .video-card .live { position: absolute; left: 10px; top: 10px; background: var(--live); color: #fff; padding: 4px 10px; border-radius: 999px; font: 800 10px var(--font-ui-en); letter-spacing: .12em; }
-.video-card .live::before { content:''; width: 6px; height: 6px; border-radius: 50%; background: #fff; }
 .video-meta { padding-top: 10px; }
 .video-meta h4 { margin: 0 0 4px; font: 700 15px / 1.45 var(--font-ui-bn); color: var(--ink-1); }
 .video-meta .meta { font: 12px var(--font-ui-bn); color: var(--ink-4); }
