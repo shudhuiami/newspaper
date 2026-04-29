@@ -1,0 +1,100 @@
+/* ========================================================================== 
+   Issue #10 — Accessibility and keyboard UX polish
+   Visual changes are intentionally minimal and focused on usability.
+   ========================================================================== */
+
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: 12px;
+  z-index: calc(var(--z-modal) + 10);
+  transform: translateY(-140%);
+  background: var(--ink-1);
+  color: #fff;
+  border-radius: var(--radius-pill);
+  padding: 10px 16px;
+  font: 700 13px var(--font-ui-bn);
+  box-shadow: var(--shadow-overlay);
+  background-image: none;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 3px solid var(--gold-100);
+  outline-offset: 3px;
+}
+
+#root:focus {
+  outline: none;
+}
+
+/* Give keyboard users a consistent visible affordance across old and new UI. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+.search-suggestion:focus-visible,
+.drawer-nav a:focus-visible,
+.card-actions button:focus-visible,
+.header-icon-button:focus-visible,
+.back-to-top:focus-visible {
+  outline: 3px solid rgba(139, 42, 53, .38);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(139, 42, 53, .12);
+}
+
+/* Icon-only controls should still expose a strong visible focus target. */
+.header-icon-button:focus-visible,
+.search-overlay-close:focus-visible,
+.drawer-close:focus-visible,
+.card-actions button:focus-visible,
+.back-to-top:focus-visible {
+  border-color: var(--maroon-600);
+}
+
+/* Closed dialogs should not be focusable/clickable through the page. */
+.search-overlay[aria-hidden="true"],
+.mobile-drawer[aria-hidden="true"] {
+  visibility: hidden;
+}
+
+.search-overlay.is-open,
+.mobile-drawer.is-open {
+  visibility: visible;
+}
+
+.search-overlay-panel:focus,
+.drawer-panel:focus {
+  outline: none;
+}
+
+/* Improve text-only image placeholders for assistive technology users. */
+.img[role="img"] {
+  isolation: isolate;
+}
+
+/* Keep focus and target sizes comfortable on touch devices. */
+@media (max-width: 768px) {
+  a,
+  button,
+  .search-suggestion,
+  .drawer-nav a {
+    scroll-margin-top: 84px;
+  }
+
+  .card-actions button,
+  .header-icon-button,
+  .search-overlay-close,
+  .drawer-close,
+  .back-to-top {
+    min-width: 42px;
+    min-height: 42px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none !important;
+  }
+}
