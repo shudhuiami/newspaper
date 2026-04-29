@@ -1,0 +1,46 @@
+---
+description: Accessibility and QA skill for the static newspaper UI prototype
+globs:
+  - "**/*.html"
+  - "**/*.css"
+  - "**/*.js"
+alwaysApply: false
+---
+
+# Skill: Accessibility and QA
+
+Use this skill before finishing any UI task or when improving semantic HTML, keyboard support, focus states, and final polish.
+
+## Accessibility Rules
+- Use semantic HTML wherever possible.
+- Use real buttons for actions.
+- Use links for navigation.
+- Add `aria-label` to icon-only controls.
+- Make focus states visible with `:focus-visible`.
+- Ensure overlays and drawers can be closed with Escape.
+- Ensure language toggle, search, mobile menu, and back-to-top are keyboard usable.
+- Do not rely on color alone to communicate state.
+
+## QA Checklist
+Before considering a task complete, verify:
+- `index.html` loads without build tools.
+- Bangla mode renders correctly.
+- English mode renders correctly.
+- Language toggle works after re-render.
+- Search overlay works.
+- Mobile drawer works.
+- Back-to-top works.
+- Scroll reveal does not break layout.
+- No horizontal overflow on mobile.
+- No browser console errors during normal use.
+- CSS comments and JS comments are useful.
+
+## Code Cleanup Rules
+- Remove dead CSS only when clearly unused.
+- Avoid deleting existing features unintentionally.
+- Keep comments concise and helpful.
+- Keep function names descriptive.
+- Do not introduce large unstructured blocks of code.
+
+## Definition of Done
+A UI task is complete only when the feature looks polished, works in both languages, remains static, and is safe to preview by opening `index.html`.
